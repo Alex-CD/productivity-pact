@@ -8,7 +8,7 @@ const session = require('express-session')
 
 const limiter = rateLimit({
   windowMs: 60 * 1000, //1 minute
-  max: 100 // 100 requests per minute
+  max: 100, // 100 requests per minute
   message: 'Too many requests!'
 });
 
