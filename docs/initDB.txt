@@ -1,0 +1,9 @@
+CREATE SCHEMA productivitypact;
+
+CREATE TABLE productivitypact.rooms(
+	room_id INT PRIMARY KEY NOT NULL,
+	room_name TEXT NOT NULL,
+	creation_date TIMESTAMP,
+	users JSON NOT NULL,
+	messages JSON NOT NULL
+);
