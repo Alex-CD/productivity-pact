@@ -1,10 +1,11 @@
 var app = require('express')();
 var rateLimit = require('express-rate-limit');
 var http = require('http').createServer(app);
-var io = require('socket.io')(http);
 
-const redis = require('redis')
-const session = require('express-session')
+const redis = require('redis');
+const session = require('express-session');
+
+require('./sockets')(app, http);
 
 const limiter = rateLimit({
   windowMs: 60 * 1000, //1 minute
@@ -15,6 +16,8 @@ const limiter = rateLimit({
 // Apply rate limiter to all requests
 app.use(limiter);
 
+
+// Routes
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/debug.html');
 });
@@ -24,6 +27,4 @@ http.listen(3000, function(){
   console.log('Server Started\nlistening on *:3000');
 });
 
-io.on('connection', function(socket){
-  console.log('a user connected');
-});
+
