@@ -1,9 +1,15 @@
 CREATE SCHEMA productivitypact;
 
 CREATE TABLE productivitypact.rooms(
-	room_id INT PRIMARY KEY NOT NULL,
-	room_name TEXT NOT NULL,
-	creation_date TIMESTAMP,
+	room_id SERIAL PRIMARY KEY,
+	room_name CHAR(40) NOT NULL,
+	password CHAR(60) NOT NULL,
+	creation_timestamp TIMESTAMP,
 	users JSON NOT NULL,
 	messages JSON NOT NULL
 );
+
+
+PREPARE createroom(VARCHAR(40), CHAR(60), VARCHAR(20)) AS
+	INSERT INTO productivitypact.rooms (room_name, password, creation_timestamp, users, messages)
+	VALUES($1, $2, current_timestamp, '{{"user": "$3"}}', '{}');
