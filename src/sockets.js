@@ -1,22 +1,25 @@
 
-
 var sio = require('socket.io');
+var utils = require('./utils');
+var sanitizer = require('sanitize')();
 
-module.exports = Sockets;
+module.exports = function Sockets(app, http, db, auth){
 
-
-function Sockets(app, http) {
-    
     io = sio.listen(http);
 
     io.on('connection', function (socket) {
 
-        socket.on('createroom', function (roomname, password) {
-            console.log("createroom");
-            // Create room in database
-        });
+        socket.on('createroom', (err, res)=>{
+            if(!err){
+                console.log("Create Room!:," + roomname + "," + creator + + "," + plainPassword);
+                
+            } else {
+                client.query();
+            }
+         });
 
-        socket.on('auth', function(){
+
+        socket.on('auth', function () {
             console.log("auth");
         });
 
@@ -28,14 +31,14 @@ function Sockets(app, http) {
             // 
         });
 
-        socket.on('disconnect', function() {
+        socket.on('disconnect', function () {
             console.log("disconnect");
             // If connected:
             // remove from chat group
             // Notify other users of leaving
         });
 
-        socket.on('message', function() {
+        socket.on('message', function () {
             // Broadcast message
             console.log("message");
         });
