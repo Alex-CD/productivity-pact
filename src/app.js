@@ -20,10 +20,10 @@ const db = new Client({
 });
 
 db.connect();
-
+require('./dbUtils').initDB(db);
 
 require('./sockets')(app, http, db, bcrypt);
-var dbUtis = require('./dbUtils');
+
 
 const limiter = rateLimit({
   windowMs: 60 * 1000, //1 minute

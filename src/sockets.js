@@ -1,22 +1,37 @@
 
 var sio = require('socket.io');
 var utils = require('./utils');
+var dbUtils = require('./dbUtils');
 var sanitizer = require('sanitize')();
 
-module.exports = function Sockets(app, http, db, auth){
+module.exports = function Sockets(app, http, db, bcrypt) {
 
     io = sio.listen(http);
 
     io.on('connection', function (socket) {
 
-        socket.on('createroom', (err, res)=>{
-            if(!err){
-                console.log("Create Room!:," + roomname + "," + creator + + "," + plainPassword);
-                
-            } else {
-                client.query();
-            }
-         });
+        socket.on('createroom', (roomname, creator, plainPassword) => {
+
+            console.log("CreateRoom:" + roomname + "," + creator + "," + plainPassword + "\n");
+
+
+            bcrypt.hash(plainPassword, 10, function (err, hash) {
+                if (!err) {
+                    dbUtils.createRoom(db, roomname, hash, creator, (err, res) => {
+                        if (!err) {
+        
+                        } else {
+                            console.log(err);
+                        }
+                    });
+                } else {
+                    console.log("err");
+                }
+            });
+
+
+
+        });
 
 
         socket.on('auth', function () {
@@ -25,10 +40,7 @@ module.exports = function Sockets(app, http, db, auth){
 
         socket.on('handshake', function (username, room, password) {
             console.log("handshake" + username + room + password);
-            // If pass is correct:
-            // Return chat history
-            // Return Auth token
-            // 
+
         });
 
         socket.on('disconnect', function () {
