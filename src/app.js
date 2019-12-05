@@ -20,7 +20,10 @@ const db = new Client({
 });
 
 db.connect();
-require('./dbUtils').initDB(db);
+
+if(process.env.RESETDBONRUN == "true"){
+  require('./dbUtils').initDB(db);
+}
 
 require('./sockets')(app, http, db, bcrypt);
 

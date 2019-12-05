@@ -7,50 +7,59 @@ var sanitizer = require('sanitize')();
 module.exports = function Sockets(app, http, db, bcrypt) {
 
     io = sio.listen(http);
-
+    
     io.on('connection', function (socket) {
+        socket.on('createroom', (roomName, creator, plainPassword) => {
 
-        socket.on('createroom', (roomname, creator, plainPassword) => {
+            console.log("CreateRoom:" + roomName + "," + creator + "," + plainPassword + "\n");
 
-            console.log("CreateRoom:" + roomname + "," + creator + "," + plainPassword + "\n");
-
-
-            bcrypt.hash(plainPassword, 10, function (err, hash) {
-                if (!err) {
-                    dbUtils.createRoom(db, roomname, hash, creator, (err, res) => {
+            dbUtils.roomExists(db, roomName, (err, roomExists) => {
+                if (!err && !roomExists) {
+                    bcrypt.hash(plainPassword, 10, function (err, hash) {
                         if (!err) {
-        
-                        } else {
-                            console.log(err);
+                            dbUtils.createRoom(db, roomName, hash, creator, (err) => {
+                                if (!err) {
+                                    socket.emit("createRoom", true);
+                                } else {
+                                    console.log(err);
+                                }
+                            });
                         }
                     });
                 } else {
-                    console.log("err");
+                    socket.emit("roomNameTaken");
                 }
             });
-
-
-
         });
 
-
-        socket.on('auth', function () {
-            console.log("auth");
-        });
-
-        socket.on('handshake', function (username, room, password) {
+        socket.on('handshake', (username, room, password) => {
             console.log("handshake" + username + room + password);
 
+            dbUtils.roomExists(db, room, (err, res) => {
+                if (!err && res) {
+                    dbUtils.verifyPassword(db, bcrypt, roomName, password, (err, res) => {
+                        if (!err && res) {
+                            // TODO: Give client auth token
+                        } else {
+                            // "password incorrect"
+                            socket.emit("badPass");
+                        }
+                    });
+                } else {
+                    // "room does not exist"
+                    socket.emit("badRoom");
+                }
+            });
         });
 
-        socket.on('disconnect', function () {
+        socket.on('disconnect', (err) => {
             console.log("disconnect");
             // If connected:
             // remove from chat group
             // Notify other users of leaving
         });
 
-        socket.on('message', function () {
+        socket.on('message', (err) => {
             // Broadcast message
             console.log("message");
         });
