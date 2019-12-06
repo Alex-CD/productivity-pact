@@ -21,9 +21,13 @@ const db = new Client({
 
 db.connect();
 
-if(process.env.RESETDBONRUN == "true"){
-  require('./dbUtils').initDB(db);
+// Delete and rebuild table
+if(process.env.REBUILDDBONRUN == "true"){
+  require('./dbUtils').dropTables(db);
+  require('./dbUtils').initTables(db);
 }
+
+
 
 require('./sockets')(app, http, db, bcrypt);
 

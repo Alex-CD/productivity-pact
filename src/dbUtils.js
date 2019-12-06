@@ -37,7 +37,7 @@ exports.verifyPassword = function(db, crypt, roomName, password, callback){
 }
 
 
-exports.initDB = function (dbClient) {
+exports.initTables = function (dbClient) {
 
 	// Delete rows from table
 	// Initialise rooms table
@@ -50,4 +50,13 @@ exports.initDB = function (dbClient) {
 		+ "messages JSON NOT NULL)", (err) => {
 			console.log(err);
 		});
+
+
+	
 };
+
+exports.deleteTables = function(dbClient){
+	dbClient.query("DROP TABLE IF EXISTS productivitypact.rooms;");
+};
+
+
