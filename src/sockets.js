@@ -32,22 +32,25 @@ module.exports = function Sockets(app, http, db, bcrypt) {
             });
         });
 
-        socket.on('handshake', (username, room, password) => {
-            console.log("handshake" + username + room + password);
+        socket.on('joinRoom', (roomName, username, password) => {
+            console.log("joinRoom" + username + roomName + password);
 
             dbUtils.roomExists(db, room, (err, res) => {
                 if (!err && res) {
                     dbUtils.verifyPassword(db, bcrypt, roomName, password, (err, res) => {
                         if (!err && res) {
+                            console.log("Room Joined");
                             // TODO: Give client auth token
                         } else {
                             // "password incorrect"
                             socket.emit("badPass");
+                            console.log("badpass");
                         }
                     });
                 } else {
                     // "room does not exist"
                     socket.emit("badRoom");
+                    console.log("badRoom");
                 }
             });
         });

@@ -38,9 +38,7 @@ exports.verifyPassword = function(db, crypt, roomName, password, callback){
 
 
 exports.initTables = function (dbClient) {
-
-	// Delete rows from table
-	// Initialise rooms table
+	
 	dbClient.query("CREATE TABLE IF NOT EXISTS productivitypact.rooms("
 		+ "room_id SERIAL PRIMARY KEY, "
 		+ "room_name CHAR(40) NOT NULL, "
@@ -48,15 +46,16 @@ exports.initTables = function (dbClient) {
 		+ "creation_timestamp TIMESTAMP, "
 		+ "users JSON NOT NULL, "
 		+ "messages JSON NOT NULL)", (err) => {
-			console.log(err);
+			console.log("createTable:" + err);
 		});
-
-
-	
 };
 
 exports.deleteTables = function(dbClient){
-	dbClient.query("DROP TABLE IF EXISTS productivitypact.rooms;");
+	dbClient.query("DROP TABLE IF EXISTS productivitypact.rooms;", (err)=>{
+		if(err){
+			console.log("deleteTable:" + err);
+		}
+	});
 };
 
 
