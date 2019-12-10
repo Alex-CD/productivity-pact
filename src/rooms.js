@@ -41,5 +41,3 @@ exports.joinRoom = function (db, bcrypt, socket, roomName, username, password) {
         }
     });
 };
-
-exports.dis

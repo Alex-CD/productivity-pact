@@ -5,6 +5,6 @@ module.message = function () {
 };
 
 
-module.disconnect = function() {
+module.disconnect = function () {
 
-}
+};

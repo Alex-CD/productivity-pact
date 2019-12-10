@@ -7,7 +7,7 @@ exports.createRoom = function (db, roomName, hashedPass, creatorName, callback) 
 
 exports.roomExists = function (db, roomName, callback) {
 	db.query("SELECT COUNT(*) FROM productivitypact.rooms WHERE room_name = $1;", [roomName], (err, res) => {
-		if(!err){
+		if (!err) {
 			callback(null, res.rows.length > 0);
 		} else {
 			callback(err, null);
@@ -15,15 +15,15 @@ exports.roomExists = function (db, roomName, callback) {
 	});
 }
 
-exports.verifyPassword = function(db, crypt, roomName, password, callback){
+exports.verifyPassword = function (db, crypt, roomName, password, callback) {
 
 	db.query("SELECT password FROM productivitypact.rooms WHERE room_name = $1;", [roomName], (err, res) => {
-		if(!err){
+		if (!err) {
 			// Checking room actually exists
-			if(res.rows.length > 0){
+			if (res.rows.length > 0) {
 
 				//Checking password
-				bcrypt.compare(password,  res.rows[0], (err, res)=>{
+				bcrypt.compare(password, res.rows[0], (err, res) => {
 					callback(err, res);
 				});
 			}
@@ -38,7 +38,7 @@ exports.verifyPassword = function(db, crypt, roomName, password, callback){
 
 
 exports.initTables = function (dbClient) {
-	
+
 	dbClient.query("CREATE TABLE IF NOT EXISTS productivitypact.rooms("
 		+ "room_id SERIAL PRIMARY KEY, "
 		+ "room_name CHAR(40) NOT NULL, "
@@ -50,9 +50,9 @@ exports.initTables = function (dbClient) {
 		});
 };
 
-exports.deleteTables = function(dbClient){
-	dbClient.query("DROP TABLE IF EXISTS productivitypact.rooms;", (err)=>{
-		if(err){
+exports.deleteTables = function (dbClient) {
+	dbClient.query("DROP TABLE IF EXISTS productivitypact.rooms;", (err) => {
+		if (err) {
 			console.log("deleteTable:" + err);
 		}
 	});

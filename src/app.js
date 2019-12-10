@@ -22,7 +22,7 @@ const db = new Client({
 db.connect();
 
 // Delete and rebuild table
-if(process.env.REBUILDDBONRUN == "true"){
+if (process.env.REBUILDDBONRUN == "true") {
   require('./dbUtils').deleteTables(db);
   require('./dbUtils').initTables(db);
 }
@@ -42,12 +42,12 @@ app.use(limiter);
 
 
 // Routes
-app.get('/', function(req, res){
+app.get('/', function (req, res) {
   res.sendFile(__dirname + '/debug.html');
 });
 
 
-http.listen(3000, function(){
+http.listen(3000, function () {
   console.log('Server Started\nlistening on *:3000');
 });
 
