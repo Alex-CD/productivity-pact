@@ -1,7 +1,6 @@
 # Productivity Pact
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/bbf89f0fa779dbcb8771/maintainability)](https://codeclimate.com/github/Alex-CD/productivity-pact/maintainability)
-
 [![Test Coverage](https://api.codeclimate.com/v1/badges/bbf89f0fa779dbcb8771/test_coverage)](https://codeclimate.com/github/Alex-CD/productivity-pact/test_coverage)
 
 
