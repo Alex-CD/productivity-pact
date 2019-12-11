@@ -1,4 +1,4 @@
-var dbUtils = require('./dbUtils');
+var dbUtils = require('./db');
 
 exports.createRoom = function (db, bcrypt, socket, roomName, creator, plainPassword) {
 

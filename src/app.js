@@ -23,8 +23,8 @@ db.connect();
 
 // Delete and rebuild table
 if (process.env.REBUILDDBONRUN == "true") {
-  require('./dbUtils').deleteTables(db);
-  require('./dbUtils').initTables(db);
+  require('./db').deleteTables(db);
+  require('./db').initTables(db);
 }
 
 
